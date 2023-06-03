@@ -23,3 +23,28 @@ test('Testando cadastro de três perguntas', () => {
   expect(perguntas[2].num_respostas).toBe(0);
   expect(perguntas[1].id_pergunta).toBe(perguntas[2].id_pergunta-1);
 });
+
+test('Testando cadastro de três respostas', () => {
+  modelo.cadastrar_pergunta('1 + 1 = ?');
+  modelo.cadastrar_pergunta('2 + 2 = ?');
+  modelo.cadastrar_pergunta('3 + 3 = ?');
+  const perguntas = modelo.listar_perguntas(); 
+  expect(perguntas.length).toBe(3);
+  modelo.cadastrar_resposta(perguntas[0].id_pergunta, 2);
+  modelo.cadastrar_resposta(perguntas[1].id_pergunta, 4);
+  modelo.cadastrar_resposta(perguntas[2].id_pergunta, 6);
+  
+  expect(modelo.get_respostas(perguntas[0].id_pergunta)[0].texto).toBe("2.0");
+  expect(modelo.get_respostas(perguntas[1].id_pergunta)[0].texto).toBe("4.0");
+  expect(modelo.get_respostas(perguntas[2].id_pergunta)[0].texto).toBe("6.0");
+});
+
+test('Testando obtenção de informações de uma pergunta', () => {
+  modelo.cadastrar_pergunta('1 + 1 = ?');
+  const perguntas = modelo.listar_perguntas(); 
+  modelo.cadastrar_resposta(perguntas[0].id_pergunta, 2);
+
+  expect(modelo.get_pergunta(perguntas[0].id_pergunta).texto).toBe('1 + 1 = ?');
+  expect(modelo.get_num_respostas(perguntas[0].id_pergunta)).toBe(1);
+
+});
